@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>礼物盒子动画</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: "Raleway Dots", cursive;
+      font-weight: 900;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: url("images/birthpicend.png") no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      /* 可选，让背景在滚动时固定 */
+      user-select: none;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+
+    #open-hint {
+      font-size: 50px;
+      color: #444;
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-family: "Arial", sans-serif;
+      user-select: none;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      position: relative;
+      z-index: 10;
+      transform: translateY(-200px);
+    }
+
+    /* 向上移动200px */
+    #open-hint.moved-up {
+      transform: translateY(-200px);
+      margin-bottom: 210px;
+      /* 保持下面内容间距 */
+    }
+
+    #box {
+      position: relative;
+      width: 300px;
+      height: 150px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      animation: animate 10s linear infinite;
+      margin-bottom: 20px;
+      background: transparent;
+      transition: opacity 0.8s ease;
+      z-index: 5;
+    }
+
+    #box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 300px;
+      background: rgba(0, 0, 0, 0.3);
+      transform: rotateX(90deg) translateZ(-80px);
+      filter: blur(10px);
+      z-index: -1;
+    }
+
+    #box div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    #box div span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #333;
+    }
+
+    #box div span:nth-child(1) {
+      transform: rotateY(0deg) translate3d(0, 0, 150px);
+      background: #d8aa77;
+    }
+
+    #box div span:nth-child(1)::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: url(https://amazon-press.jp/.imaging/AMZ_tile_fullwidthcol_png/dam/f6c0559e-933b-4656-8dfc-6cd729d62de7.png);
+      background-size: 200px;
+      background-repeat: no-repeat;
+      background-position: center;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    #box div span:nth-child(2) {
+      transform: rotateY(90deg) translate3d(0, 0, 150px);
+      background: #ca9864;
+    }
+
+    #box div span:nth-child(3) {
+      transform: rotateY(180deg) translate3d(0, 0, 150px);
+      background: #d8aa77;
+    }
+
+    #box div span:nth-child(3)::before {
+      content: "";
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: url(https://amazon-press.jp/.imaging/AMZ_tile_fullwidthcol_png/dam/f6c0559e-933b-4656-8dfc-6cd729d62de7.png);
+      background-size: 200px;
+      background-repeat: no-repeat;
+      background-position: center;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    #box div span:nth-child(4) {
+      transform: rotateY(270deg) translate3d(0, 0, 150px);
+      background: #ca9864;
+    }
+
+    #box .top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 300px;
+      background: #e8bb84;
+      display: flex;
+      align-items: center;
+      transform: rotateX(90deg) translate3d(0, 0, 150px);
+      box-sizing: border-box;
+      padding-left: 20px;
+      color: #333;
+      font-weight: 700;
+      font-family: Arial, sans-serif;
+    }
+
+    #box .top::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 60px;
+      background: #111 url(https://amazon-press.jp/.imaging/AMZ_tile_fullwidthcol_png/dam/47074f5b-7ca2-4cb8-acf1-bd90bb96005.png);
+      background-size: 85px;
+      background-repeat: no-repeat;
+      background-position: center;
+      top: 0;
+      left: 0;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .tape {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%) rotate(90deg);
+      width: 120px;
+      height: 60px;
+      background: #111 url(https://amazon-press.jp/.imaging/AMZ_tile_fullwidthcol_png/dam/47074f5b-7ca2-4cb8-acf1-bd90bb96005.png);
+      background-size: 85px;
+      background-position-x: 45px;
+      background-repeat: no-repeat;
+    }
+
+    span:nth-child(4) .tape {
+      transform: translateX(-50%) rotate(270deg);
+      background-position-x: 30px;
+    }
+
+    @keyframes animate {
+      0% {
+        transform: rotateX(-30deg) rotateY(-360deg);
+      }
+
+      100% {
+        transform: rotateX(-30deg) rotateY(0deg);
+      }
+    }
+
+    #gift-tip {
+      /* display: none; */
+      font-size: 20px;
+      color: #444;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-align: center;
+      font-family: "Arial", sans-serif;
+      transform: translateY(-100px);
+    }
+
+    #gift-image {
+      display: none;
+      max-width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transform-origin: center;
+    }
+
+    /* 放大弹动动画 */
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+
+      80% {
+        transform: scale(0.9);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="open-hint">快打开吧！</div>
+
+  <div id="box" title="点击打开礼物盒">
+    <div class="top">
+      <div class="upslabel"></div>
+      <div class="label">
+        Enjoy your <br /> package, <br /> my friend.
+        <div class="fineprint">
+          Happy Birthday <br /> with a surprise <br /> gift from me ❤ <br />
+        </div>
+        <div class="barcode">amazoncode</div>
+      </div>
+    </div>
+    <div>
+      <span></span>
+      <span><i class="tape"></i></span>
+      <span></span>
+      <span><i class="tape"></i></span>
+    </div>
+  </div>
+
+  <div id="gift-tip">手表一个！（去贼贼贼那里领取）</div>
+
+  <img id="gift-image" src="images/watch.jpg" alt="礼物图片" />
+
+  <script>
+    const box = document.getElementById("box");
+    const openHint = document.getElementById("open-hint");
+    const giftTip = document.getElementById("gift-tip");
+    const giftImage = document.getElementById("gift-image");
+
+    giftTip.style.display = "none";
+    giftImage.style.display = "none";
+
+    box.addEventListener("click", () => {
+      // 盒子和提示文字同时淡出
+      box.style.opacity = 0;
+      openHint.style.opacity = 0;
+
+      // 提示文字向上移动200px
+      openHint.classList.add("moved-up");
+
+      setTimeout(() => {
+        box.style.display = "none";
+        openHint.style.display = "none";
+
+        // 显示礼物提示和图片
+        giftTip.style.display = "block";
+        giftImage.style.display = "block";
+
+        // 添加放大弹动动画
+        giftImage.style.animation = "popIn 0.8s forwards";
+
+        // 保证动画结束后仍然保持显示状态
+        giftImage.style.opacity = 1;
+      }, 800);
+    });
+  </script>
+
+</body>
+
+</html>

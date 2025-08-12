@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <title>轻松熊导览页面</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: url('images/qsxiongbackground03.jpg') no-repeat center center / cover;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 50px;
+      color: #5A3E36;
+      text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+      user-select: none;
+      display: inline-block;
+      overflow: visible;
+    }
+
+    /* 标题弹跳字动画 */
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px) scale(0.8);
+      animation-fill-mode: forwards;
+      animation-name: bounceInUp;
+      animation-duration: 0.5s;
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    @keyframes bounceInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+      }
+
+      60% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.05);
+      }
+
+      80% {
+        transform: translateY(5px) scale(0.95);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modules {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .module {
+      background: rgba(255 255 255 / 0.85);
+      border-radius: 20px;
+      box-shadow: 0 8px 15px rgb(90 62 54 / 0.3);
+      padding: 40px 30px;
+      flex: 1 1 200px;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+      color: #5A3E36;
+      font-weight: bold;
+      font-size: 1.4rem;
+      user-select: none;
+      z-index: 1;
+      position: relative;
+    }
+
+    .module:hover {
+      box-shadow: 0 16px 30px rgb(90 62 54 / 0.5);
+      background-color: rgba(255 255 255 / 0.95);
+    }
+
+    /* 渐变覆盖层 */
+    #fade-overlay {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, rgba(90, 62, 54, 0.8), rgba(255, 255, 255, 0.1));
+      opacity: 0;
+      transition: opacity 1s ease;
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1 id="title">碳灰成长日记</h1>
+
+  <div class="modules">
+    <div class="module" onclick="fadeToPage('swiper.html')">怎么长这么大了！</div>
+    <div class="module" onclick="fadeToPage('prize.html')">礼物不在这里</div>
+  </div>
+
+  <!-- 渐变遮罩 -->
+  <div id="fade-overlay"></div>
+
+  <script>
+    // 动态拆分标题为单个span，添加弹入动画并顺序延迟
+    function animateTitle() {
+      const title = document.getElementById('title');
+      const text = title.textContent.trim();
+      title.textContent = '';
+      [...text].forEach((char, i) => {
+        const span = document.createElement('span');
+        span.className = 'letter';
+        span.style.animationDelay = `${i * 0.1}s`;
+        span.textContent = char;
+        title.appendChild(span);
+      });
+    }
+    animateTitle();
+
+    function fadeToPage(page) {
+      const overlay = document.getElementById('fade-overlay');
+
+      overlay.style.pointerEvents = 'auto';
+      overlay.style.opacity = '1';
+
+      setTimeout(() => {
+        location.href = page;
+      }, 1000);
+    }
+  </script>
+
+</body>
+
+</html>
